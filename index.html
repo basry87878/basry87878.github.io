@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stoisser — Vending Machines</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0e0e0e;
+    --white: #ffffff;
+    --accent: #f5a623;
+    --accent-dim: #fde8bc;
+    --gray-100: #f5f5f3;
+    --gray-300: #d4d3cf;
+    --gray-500: #8a8a86;
+    --gray-700: #3c3c3a;
+    --text: #0e0e0e;
+    --text-muted: #6a6a66;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--gray-300);
+    position: sticky;
+    top: 0;
+    background: var(--white);
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+  nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--text); font-weight: 500; }
+  .nav-cta {
+    background: var(--black);
+    color: var(--white) !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 99px;
+    font-weight: 500 !important;
+  }
+  .nav-cta:hover { background: var(--gray-700); }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    color: var(--black);
+  }
+  h1 em {
+    font-style: normal;
+    background: var(--accent-dim);
+    padding: 0 0.15em;
+    border-radius: 4px;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 99px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary { background: var(--black); color: var(--white); }
+  .btn-primary:hover { background: var(--gray-700); }
+  .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--gray-300); }
+  .btn-outline:hover { border-color: var(--gray-700); }
+
+  /* MACHINE ILLUSTRATION */
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+  .machine {
+    width: 140px;
+    background: var(--gray-100);
+    border-radius: 16px 16px 8px 8px;
+    border: 1.5px solid var(--gray-300);
+    overflow: hidden;
+    position: relative;
+  }
+  .machine.tall { height: 320px; }
+  .machine.mid { height: 260px; margin-top: 60px; }
+  .machine-top {
+    background: var(--black);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .machine-top span {
+    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+  }
+  .machine-screen {
+    margin: 12px;
+    background: var(--black);
+    border-radius: 8px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .screen-text {
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 0 12px;
+  }
+  .slot {
+    height: 44px;
+    border-radius: 6px;
+    border: 1px solid var(--gray-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  .slot.filled { background: var(--white); }
+  .machine-base {
+    margin: 10px 12px 0;
+    height: 28px;
+    background: var(--gray-300);
+    border-radius: 4px;
+    position: absolute;
+    bottom: 12px;
+    left: 0; right: 0;
+    margin: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: var(--gray-500);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* STATS STRIP */
+  .stats {
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+  }
+  .stat {
+    flex: 1;
+    max-width: 280px;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    border-right: 1px solid #2a2a2a;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.5rem;
+  }
+
+  /* MACHINES SECTION */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 3rem;
+    max-width: 520px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .card {
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover { border-color: var(--gray-500); }
+  .card-tag {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: #7a5000;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+  .card-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .spec {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    padding: 0.35rem 0;
+    border-top: 1px solid var(--gray-100);
+    color: var(--text-muted);
+  }
+  .spec strong { color: var(--text); font-weight: 500; }
+  .card-accent {
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: var(--accent-dim);
+    border-radius: 0 var(--radius) 0 100%;
+    opacity: 0.5;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    background: var(--gray-100);
+    padding: 5rem 2rem;
+  }
+  .how-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .step { position: relative; }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .step h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.015em;
+  }
+  .step p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* CTA */
+  .cta-section {
+    background: var(--black);
+    color: var(--white);
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+  .cta-section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: -0.03em;
+    margin: 0 auto 1rem;
+    color: var(--white);
+  }
+  .cta-section p {
+    color: #888;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--gray-300);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer a { color: var(--text-muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 700px) {
+    .hero { grid-template-columns: 1fr; padding: 3rem 1.25rem; }
+    .hero-visual { display: none; }
+    nav ul { display: none; }
+    .stats { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid #2a2a2a; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">STOISSER</a>
+  <ul>
+    <li><a href="index.html" class="active">Machines</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="about.html#contact" class="nav-cta">Contact us</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div>
+    <p class="hero-label">// Smart Vending Solutions</p>
+    <h1>Machines that <em>work</em> while you don't</h1>
+    <p class="hero-sub">Modern vending solutions for offices, gyms, hospitals, and high-traffic spaces. Cashless, connected, always stocked.</p>
+    <div class="btn-group">
+      <a href="about.html#contact" class="btn btn-primary">Get a free quote →</a>
+      <a href="#machines" class="btn btn-outline">View machines</a>
+    </div>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div class="machine tall">
+      <div class="machine-top"><span></span><span></span><span></span></div>
+      <div class="machine-screen">
+        <div class="screen-text">READY<br>TAP OR SCAN</div>
+      </div>
+      <div class="slots">
+        <div class="slot filled">🥤</div>
+        <div class="slot filled">🍫</div>
+        <div class="slot filled">🥜</div>
+        <div class="slot filled">🧃</div>
+        <div class="slot filled">🍪</div>
+        <div class="slot filled">💊</div>
+      </div>
+      <div class="machine-base">INSERT COIN</div>
+    </div>
+    <div class="machine mid">
+      <div class="machine-top"><span></span><span></span></div>
+      <div class="machine-screen">
+        <div class="screen-text">COLD<br>BEVERAGES</div>
+      </div>
+      <div class="slots">
+        <div class="slot filled">🧋</div>
+        <div class="slot filled">🥛</div>
+        <div class="slot filled">💧</div>
+        <div class="slot filled">🍹</div>
+      </div>
+      <div class="machine-base">TAP TO PAY</div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">500+</div>
+    <div class="stat-label">Machines deployed</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">Remote monitoring</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">98%</div>
+    <div class="stat-label">Uptime guaranteed</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">0 fees</div>
+    <div class="stat-label">Installation cost</div>
+  </div>
+</div>
+
+<section class="section" id="machines">
+  <p class="section-label">// Our machines</p>
+  <h2>The right machine for every space</h2>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-accent"></div>
+      <span class="card-tag">Best seller</span>
+      <h3>Snack & Drink Combo</h3>
+      <p>The all-in-one workhorse. Handles cold drinks and snacks in a single footprint — ideal for offices and waiting rooms.</p>
+      <div class="card-specs">
+        <div class="spec"><span>Capacity</span><strong>60–80 items</strong></div>
+        <div class="spec"><span>Payment</span><strong>Card, NFC, QR</strong></div>
+        <div class="spec"><span>Dimensions</span><strong>72" × 38" × 35"</strong></div>
+        <div class="spec"><span>Restocking</span><strong>Weekly</strong></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Cold Beverage Tower</h3>
+      <p>High-volume refrigerated unit for gyms, stadiums, and break rooms. Glass front, LED-lit, impossible to miss.</p>
+      <div class="card-specs">
+        <div class="spec"><span>Capacity</span><strong>120+ cans/bottles</strong></div>
+        <div class="spec"><span>Temp control</span><strong>35–45°F</strong></div>
+        <div class="spec"><span>Payment</span><strong>Card, NFC, QR</strong></div>
+        <div class="spec"><span>Restocking</span><strong>Twice weekly</strong></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Healthy Options Unit</h3>
+      <p>Curated for health-conscious workplaces: fresh wraps, fruit cups, protein bars, and low-sugar drinks. Refrigerated.</p>
+      <div class="card-specs">
+        <div class="spec"><span>Capacity</span><strong>45–60 items</strong></div>
+        <div class="spec"><span>Shelf life tracking</span><strong>Yes (IoT)</strong></div>
+        <div class="spec"><span>Payment</span><strong>Card, NFC, QR</strong></div>
+        <div class="spec"><span>Restocking</span><strong>3× weekly</strong></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Micro Market Kiosk</h3>
+      <p>Turn a break room corner into an open-shelf market. Customers grab what they want and self-checkout at the kiosk.</p>
+      <div class="card-specs">
+        <div class="spec"><span>Min. space</span><strong>100 sq ft</strong></div>
+        <div class="spec"><span>SKUs</span><strong>Up to 200</strong></div>
+        <div class="spec"><span>Payment</span><strong>Card, app, cash</strong></div>
+        <div class="spec"><span>Best for</span><strong>50+ employees</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="how">
+  <div class="how-inner">
+    <p class="section-label">// How it works</p>
+    <h2>Up and running in under a week</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01 —</div>
+        <h4>Tell us your space</h4>
+        <p>Fill out a short form: location, foot traffic, and what kind of products your people want.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02 —</div>
+        <h4>We handle install</h4>
+        <p>Our team delivers and installs the machine at no charge. Zero disruption to your day.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03 —</div>
+        <h4>We keep it stocked</h4>
+        <p>Real-time inventory sensors alert us before items run out. You never have to think about it.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04 —</div>
+        <h4>You earn revenue</h4>
+        <p>Depending on your agreement, you receive a share of every sale — passively.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section">
+  <h2>Ready to bring a machine to your space?</h2>
+  <p>No upfront cost. No hassle. We handle everything from delivery to restocking.</p>
+  <a href="about.html#contact" class="btn btn-primary" style="background: var(--accent); color: var(--black); font-size: 1.05rem; padding: 0.9rem 2rem;">Get your free quote →</a>
+</section>
+
+<footer>
+  <a class="logo" href="index.html">STOISSER</a>
+  <span>© 2025 Stoisser. All rights reserved.</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="index.html">Machines</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

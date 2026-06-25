@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Stoisser</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0e0e0e;
+    --white: #ffffff;
+    --accent: #f5a623;
+    --accent-dim: #fde8bc;
+    --gray-100: #f5f5f3;
+    --gray-300: #d4d3cf;
+    --gray-500: #8a8a86;
+    --gray-700: #3c3c3a;
+    --text: #0e0e0e;
+    --text-muted: #6a6a66;
+    --radius: 12px;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); line-height: 1.6; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--gray-300);
+    position: sticky; top: 0; background: var(--white); z-index: 100;
+  }
+  .logo { font-family: 'DM Mono', monospace; font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; color: var(--black); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav a { text-decoration: none; color: var(--text-muted); font-size: 0.95rem; transition: color 0.2s; }
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--text); font-weight: 500; }
+  .nav-cta { background: var(--black); color: var(--white) !important; padding: 0.5rem 1.25rem; border-radius: 99px; font-weight: 500 !important; }
+  .nav-cta:hover { background: var(--gray-700); }
+
+  /* PAGE HEADER */
+  .page-header {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lead { font-size: 1.1rem; color: var(--text-muted); line-height: 1.75; }
+
+  /* MISSION BAND */
+  .mission {
+    background: var(--black);
+    color: var(--white);
+    padding: 5rem 2rem;
+  }
+  .mission-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .mission h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--white);
+  }
+  .mission h2 em { font-style: normal; color: var(--accent); }
+  .mission-text p {
+    color: #999;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  /* VALUES */
+  .values {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 3rem;
+    max-width: 500px;
+  }
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+  .value {
+    border-top: 2px solid var(--accent);
+    padding-top: 1.25rem;
+  }
+  .value-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .value h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .value p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+
+  /* TEAM */
+  .team-section {
+    background: var(--gray-100);
+    padding: 5rem 2rem;
+  }
+  .team-inner { max-width: 1100px; margin: 0 auto; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .member {
+    background: var(--white);
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: border-color 0.2s;
+  }
+  .member:hover { border-color: var(--gray-500); }
+  .avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #7a5000;
+    margin-bottom: 1rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .member h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .member-role { font-size: 0.82rem; color: var(--accent); font-family: 'DM Mono', monospace; margin-bottom: 0.75rem; }
+  .member p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* CONTACT */
+  .contact-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-info h2 { margin-bottom: 1rem; }
+  .contact-info p { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+  .contact-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .detail-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .detail-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-dim);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .detail-text { font-size: 0.9rem; }
+  .detail-text strong { display: block; font-size: 0.75rem; color: var(--text-muted); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.15rem; }
+
+  /* FORM */
+  .form-card {
+    background: var(--gray-100);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .form-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .form-group { margin-bottom: 1rem; }
+  label { display: block; font-size: 0.82rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--gray-700); }
+  input, textarea, select {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    background: var(--white);
+    color: var(--text);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 100px; }
+  .submit-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: 99px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: var(--gray-700); }
+
+  footer {
+    border-top: 1px solid var(--gray-300);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer a { color: var(--text-muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 700px) {
+    .page-header, .mission-inner, .contact-section { grid-template-columns: 1fr; gap: 2rem; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">STOISSER</a>
+  <ul>
+    <li><a href="index.html">Machines</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="#contact" class="nav-cta">Contact us</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <p class="section-label">// About Stoisser</p>
+    <h1>We exist to make <em>convenience</em> effortless</h1>
+  </div>
+  <p class="lead">Stoisser was founded on the belief that vending machines should do more than just dispense snacks. They should be smart, reliable, and invisible — so you never have to think about them.</p>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <div class="mission-inner">
+    <div>
+      <p class="section-label" style="color:#555;">// Our mission</p>
+      <h2>Put great food and drinks <em>within arm's reach</em> of every working person</h2>
+    </div>
+    <div class="mission-text">
+      <p>Based in Graz, Austria, Stoisser brings modern vending solutions to offices, gyms, and public spaces across the region.</p>
+      <p>Our edge isn't the hardware. It's the system behind it: real-time inventory tracking, cashless payment, and a local team that responds within hours when something goes wrong.</p>
+      <p>We never charge for installation, and we handle every restock ourselves. Our clients earn revenue sharing. The machine pays for everyone.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<section class="values">
+  <p class="section-label">// What we stand for</p>
+  <h2>Four things we refuse to compromise on</h2>
+
+  <div class="value-grid">
+    <div class="value">
+      <span class="value-icon">⚡</span>
+      <h4>Uptime first</h4>
+      <p>A machine that isn't working isn't serving anyone. We guarantee 98% uptime and respond to faults the same day.</p>
+    </div>
+    <div class="value">
+      <span class="value-icon">📡</span>
+      <h4>Connected always</h4>
+      <p>Every machine sends live data — sales, inventory, temperature, faults. We fix problems before your staff notices.</p>
+    </div>
+    <div class="value">
+      <span class="value-icon">🤝</span>
+      <h4>No hidden costs</h4>
+      <p>Free installation. Free service. No lock-in contracts. Our business model works only if yours does too.</p>
+    </div>
+    <div class="value">
+      <span class="value-icon">🥗</span>
+      <h4>Better choices</h4>
+      <p>We actively work with clients to stock healthier options — not just whatever maximizes margin.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<div class="team-section">
+  <div class="team-inner">
+    <p class="section-label">// The people</p>
+    <h2>Small team, big footprint</h2>
+
+    <div class="team-grid">
+      <div class="member">
+        <div class="avatar">BS</div>
+        <h4>Basry Stoisser</h4>
+        <div class="member-role">Founder & CEO</div>
+        <p>Started Stoisser to bring reliable, modern vending to Graz and beyond. Hands-on from day one.</p>
+      </div>
+      <div class="member">
+        
+      </div>
+      <div class="member">
+        
+      </div>
+      <div class="member">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-info">
+    <p class="section-label">// Get in touch</p>
+    <h2>Let's find the right machine for your space</h2>
+    <p>Fill out the form and we'll get back to you within one business day with a recommendation and a quote. No obligations.</p>
+
+    <div class="contact-detail">
+      <div class="detail-row">
+        <div class="detail-icon">📍</div>
+        <div class="detail-text">
+          <strong>Office</strong>
+          Babenbergerstrasse 61/7, 8020 Graz, Austria
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-icon">📞</div>
+        <div class="detail-text">
+          <strong>Phone</strong>
+          +43 660 6397770
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-icon">✉️</div>
+        <div class="detail-text">
+          <strong>Email</strong>
+          office@stoisser.store
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-icon">🕐</div>
+        <div class="detail-text">
+          <strong>Hours</strong>
+          Mon – Fri, 9am – 6pm
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3>Request a free quote</h3>
+    <div class="form-group">
+      <label for="name">Your name</label>
+      <input type="text" id="name" placeholder="Your full name">
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" id="email" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label for="location">Location / city</label>
+      <input type="text" id="location" placeholder="Graz, Vienna, Salzburg...">
+    </div>
+    <div class="form-group">
+      <label for="type">Type of location</label>
+      <select id="type">
+        <option value="">Select one...</option>
+        <option>Corporate office</option>
+        <option>Gym or fitness center</option>
+        <option>Hospital or clinic</option>
+        <option>University or school</option>
+        <option>Hotel or hospitality</option>
+        <option>Government facility</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">Anything else?</label>
+      <textarea id="message" placeholder="Number of employees, preferred products, specific requirements..."></textarea>
+    </div>
+    <button class="submit-btn">Send request →</button>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="index.html">STOISSER</a>
+  <span>© 2025 Stoisser. All rights reserved.</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="index.html">Machines</a>
+    <a href="about.html">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
