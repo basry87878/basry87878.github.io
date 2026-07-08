@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Stoisser — Verkaufsautomaten in Graz</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -41,18 +41,9 @@
   .btn-primary:hover { background: var(--gray-700); }
   .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--gray-300); }
   .btn-outline:hover { border-color: var(--gray-700); }
-  .hero-visual { display: flex; justify-content: center; align-items: flex-end; gap: 1rem; padding-top: 1rem; }
-  .machine { width: 140px; background: var(--gray-100); border-radius: 16px 16px 8px 8px; border: 1.5px solid var(--gray-300); overflow: hidden; position: relative; }
-  .machine.tall { height: 320px; }
-  .machine.mid { height: 260px; margin-top: 60px; }
-  .machine-top { background: var(--black); height: 40px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .machine-top span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-  .machine-screen { margin: 12px; background: var(--black); border-radius: 8px; height: 70px; display: flex; align-items: center; justify-content: center; }
-  .screen-text { font-family: 'DM Mono', monospace; color: var(--accent); font-size: 0.7rem; text-align: center; line-height: 1.5; }
-  .slots { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 12px; }
-  .slot { height: 44px; border-radius: 6px; border: 1px solid var(--gray-300); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-  .slot.filled { background: var(--white); }
-  .machine-base { height: 28px; background: var(--gray-300); border-radius: 4px; position: absolute; bottom: 12px; left: 0; right: 0; margin: 0 12px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--gray-500); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+  .hero-visual { display:flex; justify-content:center; align-items:center; }
+  /* Angepasste Bildgröße: max-width auf 50%, height auto */
+  .hero-image img { max-width: 50%; height: auto; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.15); }
   .stats { background: var(--black); color: var(--white); display: flex; justify-content: center; gap: 0; }
   .stat { flex: 1; max-width: 280px; text-align: center; padding: 2.5rem 2rem; border-right: 1px solid #2a2a2a; }
   .stat:last-child { border-right: none; }
@@ -81,7 +72,15 @@
   footer { border-top: 1px solid var(--gray-300); padding: 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem; }
   footer a { color: var(--text-muted); text-decoration: none; }
   footer a:hover { color: var(--text); }
-  @media (max-width: 700px) { .hero { grid-template-columns: 1fr; padding: 3rem 1.25rem; } .hero-visual { display: none; } nav ul { display: none; } .stats { flex-direction: column; } .stat { border-right: none; border-bottom: 1px solid #2a2a2a; } }
+  @media (max-width: 700px) { 
+    .hero { grid-template-columns: 1fr; padding: 3rem 1.25rem; } 
+    .hero-visual { display: flex; justify-content: center; align-items: center; } 
+    /* Keine doppelte Bindestrich-Fehler, nur korrekter Selektor */
+    .hero-image img { max-width: 100%; height: auto; border-radius:10px; box-shadow:0 15px 40px rgba(0,0,0,.15); }
+    nav ul { display: none; } 
+    .stats { flex-direction: column; } 
+    .stat { border-right: none; border-bottom: 1px solid #2a2a2a; } 
+  }
 </style>
 </head>
 <body>
@@ -104,21 +103,8 @@
     </div>
   </div>
   <div class="hero-visual" aria-hidden="true">
-    <div class="machine tall">
-      <div class="machine-top"><span></span><span></span><span></span></div>
-      <div class="machine-screen"><div class="screen-text">BEREIT<br>KARTE ODER NFC</div></div>
-      <div class="slots">
-        <div class="slot filled">🥤</div><div class="slot filled">🍫</div><div class="slot filled">🥜</div><div class="slot filled">🧃</div><div class="slot filled">🍪</div><div class="slot filled">💧</div>
-      </div>
-      <div class="machine-base">KONTAKTLOS</div>
-    </div>
-    <div class="machine mid">
-      <div class="machine-top"><span></span><span></span></div>
-      <div class="machine-screen"><div class="screen-text">KALTE<br>GETRÄNKE</div></div>
-      <div class="slots">
-        <div class="slot filled">🧋</div><div class="slot filled">🥛</div><div class="slot filled">💧</div><div class="slot filled">🍹</div>
-      </div>
-      <div class="machine-base">TAP TO PAY</div>
+    <div class="hero-image">
+      <img src="S_Automat.png" alt="Stoisser Verkaufsautomat" />
     </div>
   </div>
 </section>
