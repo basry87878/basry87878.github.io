@@ -72,6 +72,24 @@
   footer { border-top: 1px solid var(--gray-300); padding: 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem; }
   footer a { color: var(--text-muted); text-decoration: none; }
   footer a:hover { color: var(--text); }
+  /* Cookie-Consent-Banner */
+  #cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: var(--black); color: var(--white); padding: 1.25rem 2rem; display: none; box-shadow: 0 -4px 20px rgba(0,0,0,.2); }
+  #cookie-banner.show { display: block; }
+  .cookie-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .cookie-text { font-size: 0.88rem; color: #ccc; line-height: 1.6; max-width: 620px; }
+  .cookie-text a { color: var(--accent); text-decoration: underline; }
+  .cookie-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; flex-shrink: 0; }
+  .cookie-btn { padding: 0.6rem 1.2rem; border-radius: 99px; font-size: 0.85rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+  .cookie-btn:hover { opacity: 0.85; }
+  .cookie-btn-accept { background: var(--accent); color: var(--black); }
+  .cookie-btn-reject { background: transparent; color: var(--white); border: 1.5px solid #444; }
+  #cookie-settings-link { position: fixed; left: 1.5rem; bottom: 1.25rem; z-index: 900; background: var(--white); border: 1.5px solid var(--gray-300); color: var(--text-muted); font-size: 0.75rem; padding: 0.4rem 0.8rem; border-radius: 99px; cursor: pointer; display: none; font-family: 'DM Sans', sans-serif; }
+  #cookie-settings-link.show { display: inline-block; }
+  @media (max-width: 700px) { 
+    .cookie-inner { flex-direction: column; align-items: stretch; }
+    .cookie-actions { justify-content: stretch; }
+    .cookie-btn { flex: 1; }
+  }
   @media (max-width: 700px) { 
     .hero { grid-template-columns: 1fr; padding: 3rem 1.25rem; } 
     .hero-visual { display: flex; justify-content: center; align-items: center; } 
@@ -150,8 +168,38 @@
 </section>
 <footer>
   <a class="logo" href="index.html">STOISSER</a>
-  <span>© 2026 Stoisser. Alle Rechte vorbehalten.</span>
-  <div style="display:flex;gap:1.5rem;"><a href="index.html">Automaten</a><a href="about.html">Über uns</a><a href="about.html#contact">Kontakt</a></div>
+  <span>© 2026 Stoisser. Alle Rechte vorbehalten. · Built by <a href="https://www.linkedin.com/in/abdelrahmanbasry/" target="_blank" rel="noopener">Basry</a> · <a href="mailto:a.basry404@gmail.com">Email</a></span>
+  <div style="display:flex;gap:1.5rem;"><a href="index.html">Automaten</a><a href="about.html">Über uns</a><a href="about.html#contact">Kontakt</a><a href="datenschutz.html">Datenschutz</a></div>
 </footer>
+
+<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie-Hinweis">
+  <div class="cookie-inner">
+    <p class="cookie-text">Wir verwenden auf dieser Website ausschließlich technisch notwendige Cookies, die für den Betrieb der Seite erforderlich sind. Es erfolgt kein Tracking und keine Weitergabe von Daten an Dritte. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn-reject" onclick="setCookieConsent('necessary')">Nur notwendige</button>
+      <button class="cookie-btn cookie-btn-accept" onclick="setCookieConsent('all')">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
+<button id="cookie-settings-link" onclick="showCookieBanner()">Cookie-Einstellungen</button>
+<script>
+  function setCookieConsent(value) {
+    localStorage.setItem('cookieConsent', value);
+    localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    document.getElementById('cookie-banner').classList.remove('show');
+    document.getElementById('cookie-settings-link').classList.add('show');
+  }
+  function showCookieBanner() {
+    document.getElementById('cookie-banner').classList.add('show');
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    var consent = localStorage.getItem('cookieConsent');
+    if (!consent) {
+      document.getElementById('cookie-banner').classList.add('show');
+    } else {
+      document.getElementById('cookie-settings-link').classList.add('show');
+    }
+  });
+</script>
 </body>
 </html>
